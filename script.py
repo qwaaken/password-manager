@@ -1,43 +1,68 @@
 import random
 import time
+
 password_list = {}
-#persentation
-print('Welcome to your passwords manager')
+
+# Présentation
+print('Welcome to your password manager')
+
 while True:
     time.sleep(1)
-    command = input('What do you want to do ? : 1.show passwords list 2.delete a password 3.add a password 4.create a random password')
-    #show passwords
+    command = input(
+        'What do you want to do?\n'
+        '1. Show passwords list\n'
+        '2. Delete a password\n'
+        '3. Add a password\n'
+        '4. Create a random password\n'
+        'Choose an option: '
+    )
+
+    # Afficher les mots de passe
     if command == '1':
         if not password_list:
             print('The password list is empty')
         else:
-            print(password_list)
+            print('Here is your password list:')
+            for platform, password in password_list.items():
+                print(f'Platform: {platform} - Password: {password}')
+
+    # Supprimer un mot de passe
     elif command == '2':
         if not password_list:
             print('The password list is empty')
         else:
-            print(password_list)
-            delete = input('Which password do you want to delete ? ')
+            print('Here is your password list:')
+            for platform in password_list.keys():
+                print(f'- {platform}')
+            delete = input('Which platform\'s password do you want to delete? ')
             time.sleep(1)
-            del password_list[delete]
+            if delete in password_list:
+                del password_list[delete]
+                print(f'Password for "{delete}" has been deleted.')
+            else:
+                print(f'No password found for "{delete}".')
+
+    # Ajouter un mot de passe
     elif command == '3':
-        app_choice = input('For what platform do you want to add a password ? ')
+        app_choice = input('For what platform do you want to add a password? ')
         time.sleep(1)
-        password_choice = input('Type your password : ')
+        password_choice = input('Type your password: ')
         password_list[app_choice] = password_choice
-        print(password_list)
+        print(f'Password for "{app_choice}" has been added.')
+
+    # Générer un mot de passe aléatoire
     elif command == '4':
-        app_choice2 = input('For what platform do you want to add a password ? ')
-        random_m_letter = random.choice(['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'])
-        random_m_letter2 = random.choice([ 'M','N', 'O', 'P', 'Q', 'R', 'S', 'T','U','V', 'W', 'X', 'Y', 'Z'])
-        random_b_letter = random.choice(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l' ])
-        random_b_letter2 = random.choice(['m','n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'])
-        random_number = random.choice(['1','2','3','4','5'])
-        random_number2 = random.choice(['6','7','8','9','0'])
-        random_character = random.choice(['?','!','.'])
-        random_character2 = random.choice([',',':','/'])
+        symbols = "+-/*!&$#?=@abcdefghijklnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
+        app_choice2 = input('For what platform do you want to add a password? ')
+        length = int(input('Password length: '))
+        password = ''
+        for i in range(length):
+            password += random.choice(symbols)
+        print('Here is your password:', password)
+        password_list[app_choice2] = password
+        print('Here is your full list:', password_list)
         time.sleep(1)
-        random_password = random_m_letter + random_b_letter + random_character + random_number + random_number2 + random_m_letter2 + random_b_letter2 + random_character2
-        print('your password : ', random_password)
-        password_list[app_choice2] = random_password
-        print(password_list)
+
+    # Option invalide
+    else:
+        print('Invalid option. Please choose a number between 1 and 4.')
